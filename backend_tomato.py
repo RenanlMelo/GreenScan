@@ -40,7 +40,7 @@ class CNN(nn.Module):
 
 # === 2. Carregar o modelo salvo (apenas pesos do state_dict) ===
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = r"C:\Users\Roberto\Documents\programacao\python\upx_6\cnn_model.pt"
+MODEL_PATH = r".\cnn_model.pt"
 
 modelo = CNN()
 modelo.load_state_dict(torch.load(MODEL_PATH, map_location="cpu"))
