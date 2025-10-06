@@ -40,7 +40,7 @@ class CNN(nn.Module):
 
 # === 2. Carregar o modelo salvo (apenas pesos do state_dict) ===
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = r".\cnn_model.pt"
+MODEL_PATH = r".\cnn_model.pth"
 
 modelo = CNN()
 modelo.load_state_dict(torch.load(MODEL_PATH, map_location="cpu"))
@@ -123,3 +123,4 @@ async def classificar(file: UploadFile = File(...)):
         "confianca": float(conf.item()),
         "tratamento": tratamento
     })
+
