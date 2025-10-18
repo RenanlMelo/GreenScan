@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "GreenScan",
+    "slug": "GreenScan",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "bundleIdentifier": "com.renan_lmelo.GreenScan",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "package": "com.renan_lmelo.GreenScan"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "expo": {
+      "plugins": [
+        [
+          "expo-camera",
+          {
+            "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+            "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+            "recordAudioAndroid": true
+          }
+        ]
+      ]
+  }
+  }
+}
