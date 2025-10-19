@@ -18,7 +18,7 @@ type RootStackParamList = {
 
 type Props = NativeStackScreenProps<RootStackParamList, "Preview">;
 
-const API_URL = "http://192.168.15.13:8000";
+const API_URL = "http://192.168.15.182:8000";
 
 export function PreviewScreen({ route, navigation }: Props) {
   const { photoUri } = route.params;
