@@ -27,7 +27,7 @@ export function PreviewScreen({ route, navigation }: Props) {
       const formData = new FormData();
       formData.append("image", {
         uri: photoUri,
-        name: "photo1",
+        name: "photo.jpg",
         type: "image/jpeg",
       } as any);
 

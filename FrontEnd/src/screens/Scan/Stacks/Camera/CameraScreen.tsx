@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View, TouchableOpacity, Alert } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
@@ -36,6 +36,7 @@ export function CameraScreen({ navigation }: Props) {
   async function takePhoto() {
     if (!cameraRef.current) return;
     const photo = await cameraRef.current.takePictureAsync();
+    console.log(photo.uri)
     navigation.navigate("Preview", { photoUri: photo.uri });
   }
 
@@ -46,7 +47,8 @@ export function CameraScreen({ navigation }: Props) {
       allowsEditing: true,
       quality: 1,
     });
-
+    console.log(result.assets[0].uri)
+    
     if (!result.canceled) {
       navigation.navigate("Preview", { photoUri: result.assets[0].uri });
     }
