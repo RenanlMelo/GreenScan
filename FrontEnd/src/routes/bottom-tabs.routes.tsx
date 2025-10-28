@@ -1,7 +1,8 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../screens/Home/Home";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ScanStack } from "../screens/Scan/Scan";
+import { History } from "../screens/History/History";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { View } from "react-native";
 
 const Tab = createBottomTabNavigator();
@@ -48,7 +49,7 @@ export function BottomTabs() {
         component={ScanStack}
         options={{ headerShown: false }}
       />
-      <Tab.Screen name="Recents" component={Home} />
+      <Tab.Screen name="Recents" component={History} />
       <Tab.Screen name="User" component={Home} />
     </Tab.Navigator>
   );

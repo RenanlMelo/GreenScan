@@ -1,9 +1,7 @@
-import React from "react";
-import { View, Image, TouchableOpacity, Alert } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import axios from "axios";
-import { styles } from "./Styles";
+import React, { useEffect } from "react";
+import { View, Text, ActivityIndicator } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import axios from "axios";
 
 type RootStackParamList = {
   Camera: undefined;
@@ -22,6 +20,11 @@ const API_URL = "http://192.168.15.182:8000";
 
 export function PreviewScreen({ route, navigation }: Props) {
   const { photoUri } = route.params;
+
+  useEffect(() => {
+    sendPhoto(photoUri);
+  }, []);
+
   async function sendPhoto(photoUri: string) {
     try {
       const formData = new FormData();
@@ -31,55 +34,41 @@ export function PreviewScreen({ route, navigation }: Props) {
         type: "image/jpeg",
       } as any);
 
-      const api = await axios.create({
-        baseURL: API_URL,
-      });
+      const api = axios.create({ baseURL: API_URL });
 
-      const response = await api.postForm("/classificar", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      const classifyResponse = await api.postForm("/ai/analyze", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
-      const data = response.data;
+      const aiData = classifyResponse.data;
+      console.log("✅ IA classificou:", aiData);
 
-      console.log("✅ Upload sucesso:", data);
-      navigation.navigate("Report", {
+      const reportPayload = {
+        clss: aiData.classe,
+        trust: aiData.confianca,
+        treatment: aiData.tratamento,
+      };
+
+      await api.post("/reports/create", reportPayload);
+      console.log("✅ Report criado no backend");
+
+      navigation.replace("Report", {
         photoUri,
-        classe: data.classe,
-        confianca: data.confianca,
-        tratamento: data.tratamento,
+        classe: aiData.classe,
+        confianca: aiData.confianca,
+        tratamento: aiData.tratamento,
       });
     } catch (error: any) {
-      console.error("❌ Upload falhou:", error.response?.data || error.message);
-      Alert.alert("Erro", error.message);
+      console.error(
+        "❌ Erro ao processar imagem/report:",
+        error.response?.data || error.message
+      );
     }
   }
 
-  function retakePhoto() {
-    navigation.goBack();
-  }
-
   return (
-    <View style={styles.container}>
-      <Image source={{ uri: photoUri }} style={styles.previewImage} />
-      <View style={styles.containerImage} />
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={retakePhoto}>
-          <MaterialCommunityIcons
-            name="camera-retake"
-            size={40}
-            color="white"
-          />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => sendPhoto(photoUri)}
-        >
-          <MaterialCommunityIcons name="send" size={40} color="white" />
-        </TouchableOpacity>
-      </View>
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <ActivityIndicator size="large" color="#00AA00" />
+      <Text style={{ marginTop: 16 }}>Processando imagem...</Text>
     </View>
   );
 }

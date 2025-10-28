@@ -36,7 +36,6 @@ modelo = CNN()
 modelo.load_state_dict(torch.load(MODEL_PATH, map_location="cpu"))
 modelo.eval()
 
-
 classes = [
     "Tomato___Bacterial_spot", "Tomato___Early_blight", "Tomato___Late_blight",
     "Tomato___Leaf_Mold", "Tomato___Septoria_leaf_spot",

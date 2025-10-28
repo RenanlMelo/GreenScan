@@ -4,8 +4,6 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { styles } from "./Styles";
 
 type RootStackParamList = {
-  Camera: undefined;
-  Preview: { photoUri: string };
   Report: {
     photoUri: string;
     classe: string;
@@ -23,13 +21,14 @@ type Section = {
 };
 
 export function Report({ route }: Props) {
-  const { photoUri, classe, tratamento } = route.params;
+  const { photoUri, classe, confianca, tratamento } = route.params;
 
   const capitalize = (s: string) =>
     s
       .split(" ")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
+
   const condicao = classe.replace("Tomato___", "");
   const formattedCondicao = capitalize(condicao.replace(/_/g, " "));
 
@@ -84,21 +83,7 @@ export function Report({ route }: Props) {
               {section.title && (
                 <Text style={styles.sectionTitle}>{section.title}</Text>
               )}
-              {section.boldInContent ? (
-                <Text style={styles.sectionText}>
-                  {section.boldInContent.map((b, i) => (
-                    <Text key={i} style={styles.boldText}>
-                      {b.boldText}
-                    </Text>
-                  ))}
-                  {section.content.replace(
-                    section.boldInContent.map((b) => b.text).join(""),
-                    ""
-                  )}
-                </Text>
-              ) : (
-                <Text style={styles.sectionText}>{section.content}</Text>
-              )}
+              <Text style={styles.sectionText}>{section.content}</Text>
             </View>
           ))}
         </View>

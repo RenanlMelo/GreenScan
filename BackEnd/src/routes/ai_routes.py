@@ -1,33 +1,18 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import APIRouter, UploadFile, File
 from fastapi.responses import JSONResponse
-from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
 import torch
 import torch.nn.functional as F
 import io
 
-# Importações locais
+# Importações locais da AI
 from AI.model.model import modelo, classes
 from AI.utils.transforms import tta_transforms
 from AI.utils.tratamentos import tratamentos
 
-app = FastAPI()
+router = APIRouter()
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-
-@app.get("/")
-def read_root():
-    return {"message": "API funcionando corretamente 🚀"}
-
-
-@app.post("/classificar")
+@router.post("/analyze")
 async def classificar(image: UploadFile = File(...)):
     image_bytes = await image.read()
     image = Image.open(io.BytesIO(image_bytes)).convert("RGB")

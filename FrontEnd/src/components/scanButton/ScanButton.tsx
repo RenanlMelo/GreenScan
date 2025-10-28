@@ -14,13 +14,24 @@ type TabParamList = {
 
 export default function ScanButton() {
   const navigation = useNavigation<BottomTabNavigationProp<TabParamList>>();
+  const url1 = "http://192.168.15.182:8000/";
+  const url2 = "http://192.168.15.182:8000/";
 
-  const testAPI = async () => {
+  const testAPI = async (url: string) => {
+    const response = await axios.get(url, { timeout: 300 });
+    console.log("✅ Resposta do backend:", response.data);
+  };
+
+  const testingRequest = async () => {
     try {
-      const response = await axios.get("http://192.168.15.182:8000/");
-      console.log("✅ Resposta do backend:", response.data);
-    } catch (error: any) {
-      console.error("❌ Erro:", error.message);
+      await testAPI(url1);
+    } catch (error1) {
+      try {
+        await testAPI(url2);
+      } catch (error2: any) {
+        console.error("❌ Erro ao conectar:", error2.message);
+        Alert.alert("Erro", "Nenhum backend disponível!");
+      }
     }
   };
 
@@ -38,10 +49,12 @@ export default function ScanButton() {
           Know plant desease with GreenScan AI
         </Text>
       </View>
+
       <TouchableOpacity style={styles.button} onPress={handleClick}>
         <Text style={styles.buttonText}>Start Scanning</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={testAPI}>
+
+      <TouchableOpacity style={styles.button} onPress={testingRequest}>
         <Text style={styles.buttonText}>TESTE</Text>
       </TouchableOpacity>
     </View>
