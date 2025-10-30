@@ -23,7 +23,7 @@ type RootStackParamList = {
 
 type Props = NativeStackScreenProps<RootStackParamList, "History">;
 
-const API_URL = "http://192.168.15.13:8000";
+const API_URL = "https://greenscan-uak7.onrender.com";
 
 export default function History({ navigation }: Props) {
   const { reports, setReports } = useReports();

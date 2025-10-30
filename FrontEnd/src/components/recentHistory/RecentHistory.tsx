@@ -12,7 +12,9 @@ export function RecentHistory() {
   useEffect(() => {
     async function fetchReports() {
       try {
-        const response = await fetch("http://192.168.15.13:8000/reports/");
+        const response = await fetch(
+          "https://greenscan-uak7.onrender.com/reports/"
+        );
         const data = await response.json();
 
         // Ordena por created_at do mais recente para o mais antigo
@@ -47,7 +49,7 @@ export function RecentHistory() {
     const imageUri = item.image
       ? item.image.startsWith("http")
         ? item.image
-        : `http://192.168.15.13:8000/${item.image.replace("\\", "/")}`
+        : `https://greenscan-uak7.onrender.com/${item.image.replace("\\", "/")}`
       : "https://via.placeholder.com/50";
 
     return (
@@ -79,7 +81,7 @@ export function RecentHistory() {
       keyExtractor={(item) => item.id.toString()}
       renderItem={renderItem}
       showsVerticalScrollIndicator={false}
-      ListHeaderComponent={<Text style={styles.title}>Recent History</Text>}
+      ListHeaderComponent={<Text style={styles.title}>Histórico Recente</Text>}
       contentContainerStyle={{ padding: 16, paddingBottom: 50 }}
     />
   );

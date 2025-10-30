@@ -18,7 +18,7 @@ type RootStackParamList = {
 
 type Props = NativeStackScreenProps<RootStackParamList, "Preview">;
 
-const API_URL = "http://192.168.15.13:8000";
+const API_URL = "https://greenscan-uak7.onrender.com";
 
 export function PreviewScreen({ route, navigation }: Props) {
   const { photoUri } = route.params;
@@ -92,7 +92,7 @@ export function PreviewScreen({ route, navigation }: Props) {
       {/* Imagem ocupando toda a tela */}
       <Image
         source={{ uri: photoUri }}
-        style={{ flex: 1, resizeMode: "cover" }}
+        style={{ flex: 1, resizeMode: "contain" }}
       />
 
       {/* Botões */}

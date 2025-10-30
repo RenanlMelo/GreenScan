@@ -4,7 +4,7 @@ import History from "../screens/History/History";
 import { Report } from "../screens/Report/Report";
 
 export type HistoryStackParamList = {
-  History: undefined;
+  History: undefined; // nome interno, sem conflito
   Report: { reportId: number };
 };
 
@@ -12,12 +12,16 @@ const Stack = createNativeStackNavigator<HistoryStackParamList>();
 
 export function HistoryStack() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: true }}>
-      <Stack.Screen name="History" component={History} />
+    <Stack.Navigator>
+      <Stack.Screen
+        name="History"
+        component={History}
+        options={{ title: "Histórico" }}
+      />
       <Stack.Screen
         name="Report"
         component={Report}
-        options={{ headerShown: true, title: "Relatório" }}
+        options={{ title: "Relatório" }}
       />
     </Stack.Navigator>
   );

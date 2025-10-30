@@ -14,7 +14,7 @@ type TabParamList = {
 
 export default function ScanButton() {
   const navigation = useNavigation<BottomTabNavigationProp<TabParamList>>();
-  const url1 = "http://192.168.15.182:8000/";
+  const url1 = "https://greenscan-uak7.onrender.com";
   const url2 = "http://192.168.15.13:8000/";
 
   const test = false;

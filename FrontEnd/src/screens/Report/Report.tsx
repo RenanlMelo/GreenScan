@@ -23,7 +23,7 @@ type ReportData = {
   created_at: string;
 };
 
-const API_URL = "http://192.168.15.13:8000";
+const API_URL = "https://greenscan-uak7.onrender.com";
 
 export function Report({ route }: Props) {
   const { reportId } = route.params;
@@ -70,7 +70,7 @@ export function Report({ route }: Props) {
   }
 
   const imageUri = report.image
-    ? report.image.startsWith("http")
+    ? report.image.startsWith("https")
       ? report.image
       : `${API_URL}/${report.image.replace("\\", "/")}`
     : "https://via.placeholder.com/50";

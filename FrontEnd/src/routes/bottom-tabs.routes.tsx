@@ -47,7 +47,7 @@ export function BottomTabs() {
         options={{ headerShown: false }}
       />
       <Tab.Screen
-        name="History"
+        name="Histórico"
         component={HistoryStack}
         options={{ headerShown: false }}
       />
