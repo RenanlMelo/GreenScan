@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     width: width - 16,
     backgroundColor: "#fff",
     borderRadius: 16,
-    padding: 16,
+    padding: 8,
     alignSelf: "center",
     marginTop: 16,
     marginBottom: 64,
@@ -27,9 +27,10 @@ export const styles = StyleSheet.create({
   item: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
+    backgroundColor: "#FBFBFB",
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 10,
   },
   image: {
     width: 44,

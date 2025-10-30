@@ -15,7 +15,9 @@ type TabParamList = {
 export default function ScanButton() {
   const navigation = useNavigation<BottomTabNavigationProp<TabParamList>>();
   const url1 = "http://192.168.15.182:8000/";
-  const url2 = "http://192.168.15.182:8000/";
+  const url2 = "http://192.168.15.13:8000/";
+
+  const test = false;
 
   const testAPI = async (url: string) => {
     const response = await axios.get(url, { timeout: 300 });
@@ -53,10 +55,11 @@ export default function ScanButton() {
       <TouchableOpacity style={styles.button} onPress={handleClick}>
         <Text style={styles.buttonText}>Start Scanning</Text>
       </TouchableOpacity>
-
-      <TouchableOpacity style={styles.button} onPress={testingRequest}>
-        <Text style={styles.buttonText}>TESTE</Text>
-      </TouchableOpacity>
+      {test && (
+        <TouchableOpacity style={styles.button} onPress={testingRequest}>
+          <Text style={styles.buttonText}>TESTE</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }

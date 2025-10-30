@@ -1,9 +1,10 @@
+import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Home from "../screens/Home/Home";
-import { ScanStack } from "../screens/Scan/Scan";
-import { History } from "../screens/History/History";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { View } from "react-native";
+import Home from "../screens/Home/Home";
+import { ScanStack } from "./Scan.routes";
+import { HistoryStack } from "./History.routes";
 
 const Tab = createBottomTabNavigator();
 
@@ -11,19 +12,15 @@ export function BottomTabs() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarStyle: {
-          height: 120,
-          paddingTop: 12,
-        },
+        tabBarStyle: { height: 120, paddingTop: 12 },
         tabBarShowLabel: false,
         tabBarActiveTintColor: "#517861",
         tabBarInactiveTintColor: "#808080",
         tabBarIcon: ({ focused, color }) => {
           let iconName: keyof typeof MaterialCommunityIcons.glyphMap = "home";
-
           if (route.name === "Home") iconName = "home";
           else if (route.name === "Scan") iconName = "crop-free";
-          else if (route.name === "Recents") iconName = "history";
+          else if (route.name === "History") iconName = "history";
           else if (route.name === "User") iconName = "account";
 
           return (
@@ -49,8 +46,12 @@ export function BottomTabs() {
         component={ScanStack}
         options={{ headerShown: false }}
       />
-      <Tab.Screen name="Recents" component={History} />
-      <Tab.Screen name="User" component={Home} />
+      <Tab.Screen
+        name="History"
+        component={HistoryStack}
+        options={{ headerShown: false }}
+      />
+      {/* <Tab.Screen name="User" component={User} /> */}
     </Tab.Navigator>
   );
 }

@@ -16,6 +16,7 @@
     "@react-navigation/stack": "^7.4.10",
     "axios": "^1.12.2",
     "babel-preset-expo": "~54.0.0",
+    "dayjs": "^1.11.18",
     "expo": "~54.0.13",
     "expo-camera": "~17.0.8",
     "expo-image-picker": "~17.0.8",
@@ -24,7 +25,8 @@
     "react": "19.1.0",
     "react-native": "0.81.4",
     "react-native-reanimated-carousel": "^4.0.3",
-    "react-native-worklets": "0.5.1"
+    "react-native-worklets": "0.5.1",
+    "undefined": "dayjs/plugin/relativeTime"
   },
   "devDependencies": {
     "@types/react": "~19.1.0",

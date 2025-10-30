@@ -36,7 +36,7 @@ export function CameraScreen({ navigation }: Props) {
   async function takePhoto() {
     if (!cameraRef.current) return;
     const photo = await cameraRef.current.takePictureAsync();
-    console.log(photo.uri)
+    console.log(photo.uri);
     navigation.navigate("Preview", { photoUri: photo.uri });
   }
 
@@ -47,8 +47,7 @@ export function CameraScreen({ navigation }: Props) {
       allowsEditing: true,
       quality: 1,
     });
-    console.log(result.assets[0].uri)
-    
+
     if (!result.canceled) {
       navigation.navigate("Preview", { photoUri: result.assets[0].uri });
     }
