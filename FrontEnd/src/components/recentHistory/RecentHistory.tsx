@@ -16,13 +16,15 @@ export function RecentHistory() {
         const data = await response.json();
 
         // Ordena por created_at do mais recente para o mais antigo
-        const sortedReports = (data.data || data).sort(
-          (a: Report, b: Report) =>
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-        );
+        const sortedReports = (data.data || data)
+          .sort(
+            (a: Report, b: Report) =>
+              new Date(b.created_at).getTime() -
+              new Date(a.created_at).getTime()
+          )
+          .slice(0, 5); // <-- garante que realmente só vem 5
 
-        // Limita a 5 itens
-        setReports(sortedReports.slice(0, 5));
+        setReports(sortedReports);
       } catch (error) {
         console.error("Erro ao buscar histórico:", error);
       } finally {
@@ -73,7 +75,7 @@ export function RecentHistory() {
 
   return (
     <FlatList
-      data={reports}
+      data={reports.slice(0, 5)}
       keyExtractor={(item) => item.id.toString()}
       renderItem={renderItem}
       showsVerticalScrollIndicator={false}

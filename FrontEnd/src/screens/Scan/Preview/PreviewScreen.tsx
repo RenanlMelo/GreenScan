@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { styles } from "./Styles";
+import * as FileSystem from "expo-file-system/legacy";
 
 type RootStackParamList = {
   Camera: undefined;
@@ -24,9 +24,47 @@ export function PreviewScreen({ route, navigation }: Props) {
   const { photoUri } = route.params;
   const [loading, setLoading] = useState(false);
 
+  async function fetchWithRetry(
+    url: string,
+    options: RequestInit,
+    retries = 3,
+    delay = 500
+  ): Promise<Response> {
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      try {
+        const response = await fetch(url, options);
+
+        if (!response.ok) {
+          const text = await response.text();
+          throw new Error(`Erro ${response.status}: ${text}`);
+        }
+
+        return response; // sucesso ✅
+      } catch (error) {
+        console.warn(`Tentativa ${attempt} falhou:`, error);
+
+        if (attempt === retries) {
+          throw error; // todas falharam ❌
+        }
+
+        // espera antes da próxima tentativa
+        await new Promise((res) => setTimeout(res, delay));
+      }
+    }
+
+    throw new Error("Erro inesperado no fetchWithRetry");
+  }
+
   async function sendPhoto() {
     try {
       setLoading(true);
+
+      // Garante que o arquivo existe antes de enviar
+      const fileInfo = await FileSystem.getInfoAsync(photoUri);
+      if (!fileInfo.exists) {
+        throw new Error("Arquivo da foto ainda não está disponível");
+      }
+
       const formData = new FormData();
       formData.append("image", {
         uri: photoUri,
@@ -34,15 +72,17 @@ export function PreviewScreen({ route, navigation }: Props) {
         type: "image/jpeg",
       } as any);
 
-      const response = await fetch(`${API_URL}/ai/analyze`, {
+      // 🔁 Tenta até 3 vezes com 500ms de intervalo
+      const response = await fetchWithRetry(`${API_URL}/ai/analyze`, {
         method: "POST",
         body: formData,
-        headers: { "Content-Type": "multipart/form-data" },
       });
+
       const reportData = await response.json();
       navigation.replace("Report", { reportId: reportData.data.id });
     } catch (error) {
       console.error("Erro ao enviar foto:", error);
+    } finally {
       setLoading(false);
     }
   }
