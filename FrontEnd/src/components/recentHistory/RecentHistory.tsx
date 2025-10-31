@@ -4,6 +4,7 @@ import { styles } from "./Styles";
 import { useReports, Report } from "../../contexts/ReportContext";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/pt-br"; // ✅ importa o idioma português
 
 export function RecentHistory() {
   const { reports, setReports } = useReports();
@@ -24,7 +25,7 @@ export function RecentHistory() {
               new Date(b.created_at).getTime() -
               new Date(a.created_at).getTime()
           )
-          .slice(0, 5); // <-- garante que realmente só vem 5
+          .slice(0, 5); // garante que realmente só vem 5
 
         setReports(sortedReports);
       } catch (error) {
@@ -41,7 +42,9 @@ export function RecentHistory() {
     }
   }, []);
 
+  // ✅ Configura o dayjs para usar o plugin e o idioma português
   dayjs.extend(relativeTime);
+  dayjs.locale("pt-br");
 
   const renderItem = ({ item }: { item: Report }) => {
     const timeAgo = dayjs(item.created_at).fromNow();
@@ -68,7 +71,14 @@ export function RecentHistory() {
 
   if (loading) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: 16,
+        }}
+      >
         <ActivityIndicator size="large" color="#00AA00" />
         <Text style={{ marginTop: 16 }}>Carregando histórico...</Text>
       </View>
@@ -80,6 +90,7 @@ export function RecentHistory() {
       data={reports.slice(0, 5)}
       keyExtractor={(item) => item.id.toString()}
       renderItem={renderItem}
+      scrollEnabled={false}
       showsVerticalScrollIndicator={false}
       ListHeaderComponent={<Text style={styles.title}>Histórico Recente</Text>}
       contentContainerStyle={{ padding: 16, paddingBottom: 50 }}

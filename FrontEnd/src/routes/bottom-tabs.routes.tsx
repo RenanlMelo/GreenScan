@@ -40,7 +40,7 @@ export function BottomTabs() {
         },
       })}
     >
-      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Home" component={Home} options={{ title: "Início" }} />
       <Tab.Screen
         name="Scan"
         component={ScanStack}

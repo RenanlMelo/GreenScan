@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, TouchableOpacity, Alert } from "react-native";
+import { View, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -20,7 +20,23 @@ export function CameraScreen({ navigation }: Props) {
 
   const cameraRef = useRef<any>(null);
 
-  if (!permission) return <View />;
+  useEffect(() => {
+    (async () => {
+      if (!permission) return;
+      if (!permission.granted) {
+        await requestPermission();
+      }
+    })();
+  }, [permission]);
+
+  if (permission === null) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="gray" />
+      </View>
+    );
+  }
+
   if (!permission.granted) {
     return (
       <View style={styles.container}>
@@ -32,15 +48,19 @@ export function CameraScreen({ navigation }: Props) {
     );
   }
 
-  // Take photo using camera
+  // --- FUNÇÕES ---
   async function takePhoto() {
     if (!cameraRef.current) return;
-    const photo = await cameraRef.current.takePictureAsync();
-    console.log(photo.uri);
-    navigation.navigate("Preview", { photoUri: photo.uri });
+
+    try {
+      const photo = await cameraRef.current.takePictureAsync();
+      navigation.navigate("Preview", { photoUri: photo.uri });
+    } catch (error) {
+      Alert.alert("Erro", "Não foi possível tirar a foto.");
+      console.error(error);
+    }
   }
 
-  // Pick image from gallery
   async function pickImage() {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -74,6 +94,7 @@ export function CameraScreen({ navigation }: Props) {
         <TouchableOpacity style={styles.button} onPress={pickImage}>
           <MaterialCommunityIcons name="image" size={40} color="white" />
         </TouchableOpacity>
+
         <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
           <MaterialCommunityIcons name="camera-flip" size={40} color="white" />
         </TouchableOpacity>

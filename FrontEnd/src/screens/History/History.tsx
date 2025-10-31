@@ -15,6 +15,7 @@ import { styles } from "./Styles";
 import { useReports } from "../../contexts/ReportContext";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/pt-br"; // ✅ importa o idioma português
 
 type RootStackParamList = {
   History: undefined;
@@ -85,7 +86,10 @@ export default function History({ navigation }: Props) {
     navigation.navigate("Report", { reportId: id });
   }
 
+  // ✅ Configura o idioma do dayjs antes de calcular "há 2 dias", etc.
   dayjs.extend(relativeTime);
+  dayjs.locale("pt-br");
+
   const renderItem = ({ item }: { item: any }) => {
     const timeAgo = dayjs(item.created_at).fromNow();
     const imageUri = item.image

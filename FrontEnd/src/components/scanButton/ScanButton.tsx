@@ -32,7 +32,7 @@ export default function ScanButton() {
         await testAPI(url2);
       } catch (error2: any) {
         console.error("❌ Erro ao conectar:", error2.message);
-        Alert.alert("Erro", "Nenhum backend disponível!");
+        Alert.alert("Erro", "Nenhum backend disponível no momento!");
       }
     }
   };
@@ -48,16 +48,17 @@ export default function ScanButton() {
           <BrainCircuit stroke="#B2D5B8" size={28} />
         </View>
         <Text style={styles.scanText}>
-          Know plant desease with GreenScan AI
+          Identifique doenças nas plantas com a GreenScan AI
         </Text>
       </View>
 
       <TouchableOpacity style={styles.button} onPress={handleClick}>
-        <Text style={styles.buttonText}>Start Scanning</Text>
+        <Text style={styles.buttonText}>Iniciar análise</Text>
       </TouchableOpacity>
+
       {test && (
         <TouchableOpacity style={styles.button} onPress={testingRequest}>
-          <Text style={styles.buttonText}>TESTE</Text>
+          <Text style={styles.buttonText}>TESTAR CONEXÃO</Text>
         </TouchableOpacity>
       )}
     </View>

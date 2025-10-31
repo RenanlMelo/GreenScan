@@ -12,26 +12,26 @@ export default function HomeCarousel() {
     {
       id: "1",
       image: require("../../../assets/images/img1.jpg"),
-      title: "Learn how Plantia helps 10,000+ farmers",
-      body: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+      title: "Descubra como a Plantia ajuda mais de 10.000 agricultores",
+      body: "Faça parte de uma comunidade global que melhora a agricultura com tecnologia inteligente.",
     },
     {
       id: "2",
       image: require("../../../assets/images/img2.jpg"),
-      title: "Save your plants easily",
-      body: "Keep your garden healthy with AI powered monitoring.",
+      title: "Proteja suas plantas com facilidade",
+      body: "Mantenha seu jardim saudável com monitoramento e alertas baseados em IA.",
     },
     {
       id: "3",
-      image: require("../../../assets/images/img1.jpg"),
-      title: "Get tips from experts",
-      body: "Thousands of farmers share their best practices here.",
+      image: require("../../../assets/images/img3.jpg"),
+      title: "Receba dicas de especialistas",
+      body: "Aprenda as melhores práticas e truques compartilhados por agricultores experientes.",
     },
     {
       id: "4",
-      image: require("../../../assets/images/img2.jpg"),
-      title: "Track your progress",
-      body: "Monitor growth with Plantia’s smart dashboard.",
+      image: require("../../../assets/images/img4.jpeg"),
+      title: "Acompanhe o crescimento das suas plantas",
+      body: "Monitore o desenvolvimento com o painel inteligente da Plantia.",
     },
   ];
 
