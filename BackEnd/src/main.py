@@ -21,7 +21,7 @@ app = FastAPI(title="Projeto Backend com FastAPI + SQLAlchemy")
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # em produção, especifique os domínios
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

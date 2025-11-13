@@ -33,11 +33,11 @@ export const styles = StyleSheet.create({
     marginBottom: 10,
   },
   image: {
-    width: 44,
-    height: 44,
-    borderRadius: 12,
-    backgroundColor: "#e6f0ea",
+    width: 56,
+    height: 56,
+    borderRadius: 8,
     marginRight: 12,
+    backgroundColor: "#eee",
   },
   info: {
     flex: 1,

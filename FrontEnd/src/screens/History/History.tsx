@@ -15,31 +15,46 @@ import { styles } from "./Styles";
 import { useReports } from "../../contexts/ReportContext";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import "dayjs/locale/pt-br"; // ✅ importa o idioma português
+import "dayjs/locale/pt-br";
+import { API_URL } from "../../constants/api";
+import { useRoute } from "@react-navigation/native";
 
 type RootStackParamList = {
-  History: undefined;
+  History: { openReportId?: number } | undefined;
   Report: { reportId: number };
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, "History">;
-
-const API_URL = "https://greenscan-uak7.onrender.com";
 
 export default function History({ navigation }: Props) {
   const { reports, setReports } = useReports();
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
+  const route = useRoute();
+  const params = route.params as { openReportId?: number } | undefined;
+
   useEffect(() => {
     fetchReports();
   }, []);
+
+  // 🔁 Se vier da Home com um report específico, abre o relatório automaticamente
+  useEffect(() => {
+    if (params?.openReportId) {
+      // pequeno delay para garantir que os dados já estejam carregados
+      const timeout = setTimeout(() => {
+        navigation.navigate("Report", { reportId: params.openReportId! });
+      }, 300);
+      return () => clearTimeout(timeout);
+    }
+  }, [params]);
 
   async function fetchReports() {
     try {
       setLoading(true);
       const response = await axios.get(`${API_URL}/reports/`);
       const data = response.data.data || response.data;
+      // mostra os mais recentes primeiro
       setReports(data.slice().reverse());
     } catch (error: any) {
       console.error(

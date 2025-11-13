@@ -53,6 +53,7 @@ async def analyze_image(image: UploadFile = File(...), db: Session = Depends(get
 
         # 2️⃣ Processa a imagem com retry
         img = Image.open(file_path).convert("RGB")
+        
         conf, pred = analyze_with_retry(img)
 
         # 3️⃣ Interpreta resultados

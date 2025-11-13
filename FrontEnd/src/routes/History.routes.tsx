@@ -4,7 +4,7 @@ import History from "../screens/History/History";
 import { Report } from "../screens/Report/Report";
 
 export type HistoryStackParamList = {
-  History: undefined; // nome interno, sem conflito
+  History: undefined;
   Report: { reportId: number };
 };
 

@@ -1,21 +1,46 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, FlatList, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  ActivityIndicator,
+  TouchableOpacity,
+} from "react-native";
 import { styles } from "./Styles";
 import { useReports, Report } from "../../contexts/ReportContext";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/pt-br"; // ✅ importa o idioma português
+import { API_URL } from "../../constants/api";
+import {
+  CompositeNavigationProp,
+  useNavigation,
+} from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
+import { HistoryStackParamList } from "../../routes/History.routes";
+
+type TabsParamList = {
+  Início: undefined;
+  Scan: undefined;
+  Histórico: { screen?: keyof HistoryStackParamList; params?: any };
+};
+
+type NavigationProp = CompositeNavigationProp<
+  BottomTabNavigationProp<TabsParamList, "Início">,
+  NativeStackNavigationProp<HistoryStackParamList>
+>;
 
 export function RecentHistory() {
+  const navigation = useNavigation<NavigationProp>();
   const { reports, setReports } = useReports();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchReports() {
       try {
-        const response = await fetch(
-          "https://greenscan-uak7.onrender.com/reports/"
-        );
+        const response = await fetch(`${API_URL}/reports`);
         const data = await response.json();
 
         // Ordena por created_at do mais recente para o mais antigo
@@ -49,14 +74,22 @@ export function RecentHistory() {
   const renderItem = ({ item }: { item: Report }) => {
     const timeAgo = dayjs(item.created_at).fromNow();
 
+    function openReport(id: number) {
+      navigation.navigate("Histórico", {
+        screen: "History",
+        params: { openReportId: id },
+      });
+    }
+
     const imageUri = item.image
       ? item.image.startsWith("http")
         ? item.image
-        : `https://greenscan-uak7.onrender.com/${item.image.replace("\\", "/")}`
+        : // : `https://greenscan-uak7.onrender.com/${item.image.replace("\\", "/")}`
+          `${API_URL}/${item.image.replace("\\", "/")}`
       : "https://via.placeholder.com/50";
 
     return (
-      <View style={styles.item}>
+      <TouchableOpacity onPress={() => openReport(item.id)} style={styles.item}>
         <Image style={styles.image} source={{ uri: imageUri }} />
         <View style={styles.info}>
           <Text style={styles.name}>{item.title}</Text>
@@ -65,7 +98,7 @@ export function RecentHistory() {
           </Text>
         </View>
         <Text style={styles.time}>{timeAgo}</Text>
-      </View>
+      </TouchableOpacity>
     );
   };
 

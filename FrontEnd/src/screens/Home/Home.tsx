@@ -4,6 +4,7 @@ import { styles } from "./Styles";
 import HomeCarousel from "../../components/carousel/Carousel";
 import ScanButton from "../../components/scanButton/ScanButton";
 import { RecentHistory } from "../../components/recentHistory/RecentHistory";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 export default function Home() {
   return (

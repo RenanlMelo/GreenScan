@@ -4,6 +4,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import axios from "axios";
 import { styles } from "./Styles";
 import { useReports } from "../../contexts/ReportContext";
+import { API_URL } from "../../constants/api";
 
 type ScanStackParamList = {
   Report: { reportId: number };
@@ -22,8 +23,6 @@ type ReportData = {
   image: string;
   created_at: string;
 };
-
-const API_URL = "https://greenscan-uak7.onrender.com";
 
 export function Report({ route }: Props) {
   const { reportId } = route.params;

@@ -9,6 +9,7 @@ import {
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system/legacy";
+import { API_URL } from "../../../constants/api";
 
 type RootStackParamList = {
   Camera: undefined;
@@ -18,8 +19,6 @@ type RootStackParamList = {
 
 type Props = NativeStackScreenProps<RootStackParamList, "Preview">;
 
-const API_URL = "https://greenscan-uak7.onrender.com";
-
 export function PreviewScreen({ route, navigation }: Props) {
   const { photoUri } = route.params;
   const [loading, setLoading] = useState(false);
@@ -28,7 +27,7 @@ export function PreviewScreen({ route, navigation }: Props) {
     url: string,
     options: RequestInit,
     retries = 3,
-    delay = 500
+    delay = 1000
   ): Promise<Response> {
     for (let attempt = 1; attempt <= retries; attempt++) {
       try {
@@ -59,7 +58,6 @@ export function PreviewScreen({ route, navigation }: Props) {
     try {
       setLoading(true);
 
-      // Garante que o arquivo existe antes de enviar
       const fileInfo = await FileSystem.getInfoAsync(photoUri);
       if (!fileInfo.exists) {
         throw new Error("Arquivo da foto ainda não está disponível");
@@ -72,7 +70,6 @@ export function PreviewScreen({ route, navigation }: Props) {
         type: "image/jpeg",
       } as any);
 
-      // 🔁 Tenta até 3 vezes com 500ms de intervalo
       const response = await fetchWithRetry(`${API_URL}/ai/analyze`, {
         method: "POST",
         body: formData,
@@ -89,13 +86,11 @@ export function PreviewScreen({ route, navigation }: Props) {
 
   return (
     <View style={{ flex: 1, backgroundColor: "black" }}>
-      {/* Imagem ocupando toda a tela */}
       <Image
         source={{ uri: photoUri }}
         style={{ flex: 1, resizeMode: "contain" }}
       />
 
-      {/* Botões */}
       <View
         style={{
           position: "absolute",
@@ -106,7 +101,6 @@ export function PreviewScreen({ route, navigation }: Props) {
           alignItems: "center",
         }}
       >
-        {/* Tirar outra */}
         <TouchableOpacity
           style={{
             width: 75,
@@ -125,7 +119,6 @@ export function PreviewScreen({ route, navigation }: Props) {
           />
         </TouchableOpacity>
 
-        {/* Confirmar */}
         <TouchableOpacity
           style={{
             width: 70,

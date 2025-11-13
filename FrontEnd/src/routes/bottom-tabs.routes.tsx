@@ -2,7 +2,7 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { View } from "react-native";
-import Home from "../screens/Home/Home";
+import { HomeStack } from "./Home.routes";
 import { ScanStack } from "./Scan.routes";
 import { HistoryStack } from "./History.routes";
 
@@ -18,10 +18,9 @@ export function BottomTabs() {
         tabBarInactiveTintColor: "#808080",
         tabBarIcon: ({ focused, color }) => {
           let iconName: keyof typeof MaterialCommunityIcons.glyphMap = "home";
-          if (route.name === "Home") iconName = "home";
+          if (route.name === "Início") iconName = "home";
           else if (route.name === "Scan") iconName = "crop-free";
-          else if (route.name === "History") iconName = "history";
-          else if (route.name === "User") iconName = "account";
+          else if (route.name === "Histórico") iconName = "history";
 
           return (
             <View
@@ -40,7 +39,11 @@ export function BottomTabs() {
         },
       })}
     >
-      <Tab.Screen name="Home" component={Home} options={{ title: "Início" }} />
+      <Tab.Screen
+        name="Início"
+        component={HomeStack}
+        options={{ headerShown: false }}
+      />
       <Tab.Screen
         name="Scan"
         component={ScanStack}
@@ -51,7 +54,6 @@ export function BottomTabs() {
         component={HistoryStack}
         options={{ headerShown: false }}
       />
-      {/* <Tab.Screen name="User" component={User} /> */}
     </Tab.Navigator>
   );
 }
